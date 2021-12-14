@@ -1,9 +1,13 @@
 package kz.iitu.business.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import kz.iitu.business.model.enam.CovidStatus;
+import kz.iitu.business.model.enam.RiskStatus;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -28,6 +32,20 @@ public class UserDetail {
     @Column
     private String position;
 
+    @Column
+    @Enumerated(EnumType.STRING)
+    private RiskStatus riskStatus;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private CovidStatus covidStatus;
+
+    @Column
+    private String phoneNumber;
+
+    @Column
+    private Date dateOfBirth;
+
     @Column(name = "user_id", insertable = false, updatable = false)
     private Long userId;
 
@@ -37,4 +55,12 @@ public class UserDetail {
 
     @OneToMany(mappedBy = "userDetail")
     private List<Indicator> indicators;
+
+    @Column(name = "department_id")
+    private Long departmentId;
+
+    @ManyToOne
+    @JoinColumn(name = "department_id", insertable = false, updatable = false)
+    @JsonIgnore
+    private Department department;
 }
