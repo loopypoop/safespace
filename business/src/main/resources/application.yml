@@ -1,5 +1,7 @@
 server:
   port: 8077
+  servlet:
+    context-path: /business
 spring:
   application:
     name: business
