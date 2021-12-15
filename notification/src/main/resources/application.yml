@@ -1,0 +1,27 @@
+server:
+  port: 8067
+  servlet:
+    context-path: /notification
+spring:
+  application:
+    name: notification
+  main.allow-bean-definition-overriding: true
+  datasource:
+    url: jdbc:postgresql://localhost:5445/safespace-db
+    username: safespace
+    password: hc@*bvfS)4
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+      temp:
+        use_jdbc_metadata_defaults: false
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+      format_sql: true
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URL:http://127.0.0.1:8761/eureka/}
+
