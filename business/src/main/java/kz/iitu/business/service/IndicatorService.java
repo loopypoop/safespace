@@ -1,9 +1,8 @@
 package kz.iitu.business.service;
 
 import kz.iitu.business.model.Indicator;
-
-import java.util.List;
+import reactor.core.publisher.Flux;
 
 public interface IndicatorService {
-    List<Indicator> getByAllUserDetailId(Long id);
+    Flux<Indicator> getByAllUserDetailId(Long id);
 }

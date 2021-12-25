@@ -1,13 +1,13 @@
 package kz.iitu.business.repository;
 
 import kz.iitu.business.model.Indicator;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Repository
-public interface IndicatorRepository extends JpaRepository<Indicator, Long> {
-    Indicator getByUserDetailId(Long userDetailId);
-    List<Indicator> getAllByUserDetailId(Long userDetailId);
+public interface IndicatorRepository extends CrudRepository<Indicator, Long> {
+    Mono<Indicator> getByUserDetailId(Long userDetailId);
+    Flux<Indicator> getAllByUserDetailId(Long userDetailId);
 }
