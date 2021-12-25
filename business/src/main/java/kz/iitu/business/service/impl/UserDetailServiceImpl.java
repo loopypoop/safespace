@@ -9,7 +9,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,8 +18,8 @@ public class UserDetailServiceImpl implements IUserDetailService {
     private UserDetailRepository userDetailRepository;
 
     @Override
-    public Flux<UserDetail> getByUserId(Long id) {
-        return this.userDetailRepository.getByUserId(id).switchIfEmpty(Mono.empty());
+    public Mono<UserDetail> getByUserId(Long id) {
+        return this.userDetailRepository.getByUserId(id);
     }
 
     @Override

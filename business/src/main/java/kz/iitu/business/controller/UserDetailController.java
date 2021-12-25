@@ -19,7 +19,7 @@ public class UserDetailController {
     private IUserDetailService userDetailService;
 
     @GetMapping("/{userId}")
-    public Flux<ResponseEntity<UserDetail>> getByUserId(@PathVariable Long userId) {
+    public Mono<ResponseEntity<UserDetail>> getByUserId(@PathVariable Long userId) {
         return userDetailService.getByUserId(userId).map(ResponseEntity::ok);
     }
 

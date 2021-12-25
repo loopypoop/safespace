@@ -33,7 +33,7 @@ public class AuthController {
         return userService.loadUserByUsername(loginRequest.getUsername()).map(user -> {
             System.out.println(passwordEncoder.encode(loginRequest.getPassword()));
             System.out.println(user.getPassword());
-            if (passwordEncoder.encode(loginRequest.getPassword()).equals(user.getPassword())) {
+            if (passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
                 return ResponseEntity.ok(jwtUtil.generateToken(user));
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

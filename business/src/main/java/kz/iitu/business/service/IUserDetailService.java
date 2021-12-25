@@ -5,7 +5,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface IUserDetailService {
-    Flux<UserDetail> getByUserId(Long id);
+    Mono<UserDetail> getByUserId(Long id);
     Mono<String> getName(Long id);
     Mono<UserDetail> getFirstOrLast();
     Flux<UserDetail> filterList();

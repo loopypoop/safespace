@@ -8,6 +8,17 @@ spring:
     url: r2dbc:postgresql://localhost:5445/safespace-db
     username: safespace
     password: hc@*bvfS)4
+  cloud:
+    gateway:
+      routes:
+        - id: BUSINESS
+          uri: 'http://localhost:8077'
+          predicates:
+            - Path=/business/**
+        - id: NOTIFICATION
+          uri: 'http://localhost:8067'
+          predicates:
+            - Path=/notification/**
 
 eureka:
   instance:

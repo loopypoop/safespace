@@ -8,5 +8,5 @@ import reactor.core.publisher.Mono;
 
 @Repository
 public interface UserDetailRepository extends ReactiveCrudRepository<UserDetail, Long> {
-    Flux<UserDetail> getByUserId(Long userId);
+    Mono<UserDetail> getByUserId(Long userId);
 }
