@@ -10,14 +10,6 @@ spring:
     url: r2dbc:postgresql://localhost:5445/safespace-db
     username: safespace
     password: hc@*bvfS)4
-#    driver-class-name: org.postgresql.Driver
-#  jpa:
-#    hibernate:
-#      ddl-auto: update
-#      temp:
-#        use_jdbc_metadata_defaults: false
-#      dialect: org.hibernate.dialect.PostgreSQLDialect
-#      format_sql: true
 eureka:
   instance:
     prefer-ip-address: true
