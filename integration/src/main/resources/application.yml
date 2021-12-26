@@ -1,0 +1,18 @@
+server:
+  port: 7999
+spring:
+  application:
+    name: integration
+  webflux:
+    base-path: /integ
+  main.allow-bean-definition-overriding: true
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5445/safespace-db
+    username: safespace
+    password: hc@*bvfS)4
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URL:http://127.0.0.1:8761/eureka/}

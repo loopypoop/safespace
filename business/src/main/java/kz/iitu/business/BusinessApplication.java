@@ -7,6 +7,7 @@ import org.springframework.web.reactive.config.EnableWebFlux;
 
 @SpringBootApplication(scanBasePackages = {"kz.iitu"})
 @EnableEurekaClient
+@EnableWebFlux
 public class BusinessApplication {
 
     public static void main(String[] args) {

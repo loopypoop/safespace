@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.web.reactive.config.EnableWebFlux;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"kz.iitu"})
 @EnableEurekaClient
 @EnableWebFlux
 public class GatewayApplication {

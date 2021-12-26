@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>kz.iitu</groupId>
-    <artifactId>business</artifactId>
+    <artifactId>integration</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>business</name>
-    <description>The module where data is processed and retrieved for visualization.</description>
+    <name>integration</name>
+    <description>Integration service for mobile app</description>
     <properties>
         <java.version>1.8</java.version>
         <spring-cloud.version>2021.0.0</spring-cloud.version>

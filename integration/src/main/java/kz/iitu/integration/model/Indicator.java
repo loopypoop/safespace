@@ -1,4 +1,4 @@
-package kz.iitu.business.model;
+package kz.iitu.integration.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,3 +33,4 @@ public class Indicator {
     private Boolean isLast;
 
 }
+
