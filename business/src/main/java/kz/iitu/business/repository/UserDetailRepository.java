@@ -11,6 +11,8 @@ import reactor.core.publisher.Mono;
 @Repository
 public interface UserDetailRepository extends ReactiveCrudRepository<UserDetail, Long> {
     Mono<UserDetail> getByUserId(Long userId);
-    @Query(value = "select ud.* from user_detail ud join users u on u.id = ud.user_id where u.role = 'USER'")
-    Flux<UserDetail> findAllByRoleWithPagination(Pageable pageable);
+    @Query(value = "select ud.* from user_detail ud " +
+            "join users u on u.id = ud.user_id " +
+            "where u.role = 'USER' OFFSET :#{[0].offset} LIMIT :#{[0].pageSize}")
+    Flux<UserDetail> findAllUsers(Pageable pageable);
 }

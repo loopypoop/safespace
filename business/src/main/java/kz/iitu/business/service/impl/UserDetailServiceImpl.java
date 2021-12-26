@@ -39,7 +39,7 @@ public class UserDetailServiceImpl implements IUserDetailService {
 
     public Flux<UserDetail> getAllUsersByPagination(Map<String, String> params) {
         PageRequest request = createPageRequest(params);
-        return userDetailRepository.findAllByRoleWithPagination(request);
+        return userDetailRepository.findAllUsers(request);
     }
 
     private PageRequest createPageRequest(Map<String, String> params) {

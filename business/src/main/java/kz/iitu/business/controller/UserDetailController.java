@@ -26,8 +26,7 @@ public class UserDetailController {
     @GetMapping("/users")
     public Flux<UserDetail> getAllUsersByPagination(@RequestParam Map<String,String> params) {
         try {
-            Flux<UserDetail> UserDetailFlux = userDetailService.getAllUsersByPagination(params);
-            return UserDetailFlux;
+            return userDetailService.getAllUsersByPagination(params);
         } catch (Exception e) {
             System.out.println(e);
             return null;
