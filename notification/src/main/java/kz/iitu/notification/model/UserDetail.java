@@ -1,7 +1,5 @@
 package kz.iitu.notification.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import kz.iitu.notification.model.enam.CovidStatus;
 import kz.iitu.notification.model.enam.RiskStatus;
 import lombok.Data;

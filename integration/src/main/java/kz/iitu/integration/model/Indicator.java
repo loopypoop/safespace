@@ -18,13 +18,15 @@ public class Indicator {
     @Id
     private Long id;
 
-    private Long userDetailId;
+    private Long userId;
 
     private Double temperature;
 
     private Integer heartRate;
 
-    private Integer bloodPressure;
+    private Integer upperBloodPressure;
+
+    private Integer lowerBloodPressure;
 
     private Double bloodOxygen;
 

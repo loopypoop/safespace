@@ -19,7 +19,7 @@ public class IndicatorServiceImpl implements IndicatorService {
     }
 
     @Override
-    public Flux<Indicator> getByAllUserDetailId(Long userDetailId) {
-        return this.indicatorRepository.getAllByUserDetailId(userDetailId);
+    public Flux<Indicator> getByAllUserId(Long userId) {
+        return this.indicatorRepository.getAllByUserId(userId);
     }
 }

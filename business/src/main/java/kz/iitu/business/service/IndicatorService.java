@@ -4,5 +4,5 @@ import kz.iitu.business.model.Indicator;
 import reactor.core.publisher.Flux;
 
 public interface IndicatorService {
-    Flux<Indicator> getByAllUserDetailId(Long id);
+    Flux<Indicator> getByAllUserId(Long id);
 }
