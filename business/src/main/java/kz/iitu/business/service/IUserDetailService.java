@@ -18,4 +18,7 @@ public interface IUserDetailService {
     Flux<UserDetail> filterList();
 
     Flux<UserDetail> getAllUsersByPagination(Map<String, String> params);
+
+    Mono<UserDetail> updateUser(UserDetail userDetail);
+
 }

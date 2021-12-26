@@ -42,6 +42,10 @@ public class UserDetailServiceImpl implements IUserDetailService {
         return userDetailRepository.findAllUsers(request);
     }
 
+    public Mono<UserDetail> updateUser(UserDetail userDetail) {
+        return userDetailRepository.save(userDetail);
+    }
+
     private PageRequest createPageRequest(Map<String, String> params) {
         int page;
         int size;
