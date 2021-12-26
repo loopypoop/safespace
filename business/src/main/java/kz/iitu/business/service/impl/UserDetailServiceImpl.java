@@ -1,13 +1,18 @@
 package kz.iitu.business.service.impl;
 
+import kz.iitu.business.model.User;
 import kz.iitu.business.model.UserDetail;
 import kz.iitu.business.repository.UserDetailRepository;
+import kz.iitu.business.repository.UserRepository;
 import kz.iitu.business.service.IUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -16,6 +21,9 @@ public class UserDetailServiceImpl implements IUserDetailService {
 
     @Autowired
     private UserDetailRepository userDetailRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public Mono<UserDetail> getByUserId(Long id) {
@@ -28,6 +36,31 @@ public class UserDetailServiceImpl implements IUserDetailService {
         firstname = firstname.map(v -> v += "44");
         return firstname;
     }
+
+    public Flux<UserDetail> getAllUsersByPagination(Map<String, String> params) {
+        PageRequest request = createPageRequest(params);
+        return userDetailRepository.findAllByRoleWithPagination(request);
+    }
+
+    private PageRequest createPageRequest(Map<String, String> params) {
+        int page;
+        int size;
+        Sort sort = Sort.by("id");
+        page = Integer.parseInt(params.get("page"));
+        size = Integer.parseInt(params.get("size"));
+        if (params.containsKey("sortBy"))
+            sort = Sort.by(params.get("sortBy"));
+        if (params.containsKey("sortDirection")) {
+            if (params.get("sortDirection").equals("asc")) {
+                sort.ascending();
+            } else {
+                sort.descending();
+            }
+        }
+
+        return PageRequest.of(page, size, sort);
+    }
+
 
     @Override
     public Mono<UserDetail> getFirstOrLast() {

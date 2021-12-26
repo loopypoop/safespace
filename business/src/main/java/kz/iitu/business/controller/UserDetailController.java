@@ -1,15 +1,15 @@
 package kz.iitu.business.controller;
 
+import kz.iitu.business.model.User;
 import kz.iitu.business.model.UserDetail;
 import kz.iitu.business.service.IUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user-detail")
@@ -21,6 +21,17 @@ public class UserDetailController {
     @GetMapping("/{userId}")
     public Mono<ResponseEntity<UserDetail>> getByUserId(@PathVariable Long userId) {
         return userDetailService.getByUserId(userId).map(ResponseEntity::ok);
+    }
+
+    @GetMapping("/users")
+    public Flux<UserDetail> getAllUsersByPagination(@RequestParam Map<String,String> params) {
+        try {
+            Flux<UserDetail> UserDetailFlux = userDetailService.getAllUsersByPagination(params);
+            return UserDetailFlux;
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
     }
 
     @GetMapping("/name/{id}")
