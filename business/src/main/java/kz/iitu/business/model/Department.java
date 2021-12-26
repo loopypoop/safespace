@@ -20,5 +20,4 @@ public class Department {
 
     private String description;
 
-    private List<UserDetail> userDetails;
 }

@@ -15,7 +15,6 @@ public class UserDetailsServiceImpl {
 
     public Mono<User> loadUserByUsername(String username) throws UsernameNotFoundException {
         Mono<User> user = userRepository.getByUsername(username).map(v -> {
-            System.out.println(v.getUsername());
             return v;
         });
         return user.switchIfEmpty(Mono.empty());

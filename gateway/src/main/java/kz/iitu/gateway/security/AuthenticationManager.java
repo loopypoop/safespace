@@ -29,7 +29,6 @@ public class AuthenticationManager implements ReactiveAuthenticationManager {
         String username;
         try {
             username = jwtUtil.getUsernameFromToken(authToken);
-            System.out.println("username: " + username);
         } catch (Exception e) {
             username = null;
         }

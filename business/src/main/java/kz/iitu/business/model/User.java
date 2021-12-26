@@ -24,9 +24,6 @@ public class User {
 
     private String role;
 
-    @JsonIgnore
-    private UserDetail userDetail;
-
     @JsonProperty
     public void setPassword(String password) {
         this.password = password;
