@@ -8,6 +8,5 @@ import reactor.core.publisher.Mono;
 
 @Repository
 public interface IndicatorRepository extends CrudRepository<Indicator, Long> {
-    Mono<Indicator> getByUserDetailId(Long userDetailId);
     Flux<Indicator> getAllByUserId(Long userDetailId);
 }

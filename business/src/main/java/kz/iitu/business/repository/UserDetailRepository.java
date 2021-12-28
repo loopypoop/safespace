@@ -13,6 +13,6 @@ public interface UserDetailRepository extends ReactiveCrudRepository<UserDetail,
     Mono<UserDetail> getByUserId(Long userId);
     @Query(value = "select ud.* from user_detail ud " +
             "join users u on u.id = ud.user_id " +
-            "where u.role = 'USER' OFFSET :#{[0].offset} LIMIT :#{[0].pageSize}")
+            "where u.role = 'User' OFFSET :#{[0].offset} LIMIT :#{[0].pageSize}")
     Flux<UserDetail> findAllUsers(Pageable pageable);
 }

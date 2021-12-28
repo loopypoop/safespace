@@ -1,5 +1,6 @@
 package kz.iitu.business.controller;
 
+import io.swagger.annotations.ApiOperation;
 import kz.iitu.business.model.Indicator;
 import kz.iitu.business.service.IndicatorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,8 @@ public class IndicatorController {
     @Autowired
     private IndicatorService indicatorService;
 
-    @GetMapping("/user-detail/{userId}")
+    @ApiOperation(value = "get user's indicator by user's id")
+    @GetMapping("/user/{userId}")
     public Flux<Indicator> getByUserId(@PathVariable Long userId) {
         return this.indicatorService.getByAllUserId(userId);
     }

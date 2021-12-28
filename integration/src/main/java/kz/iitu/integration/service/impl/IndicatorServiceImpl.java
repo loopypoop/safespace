@@ -20,14 +20,39 @@ public class IndicatorServiceImpl implements IndicatorService {
                     v.setIsLast(false);
                     this.indicatorRepository.save(v).subscribe(s -> {
 
+//                        if (s.getTemperature() > 37.5
+//                            || s.getBloodOxygen() < 95.0
+//                            || s.getUpperBloodPressure() > 140
+//                            || s.getUpperBloodPressure() < 100
+//                            || s.getLowerBloodPressure() > 90
+//                            || s.getLowerBloodPressure() < 60
+//                            || s.getHeartRate() > 90
+//                            || s.getHeartRate() < 55) {
+//                            System.out.println("Abnormal");
+//                        }
+                        indicator.setIsLast(true);
+                        this.indicatorRepository.save(indicator).subscribe();
+                    });
+                    indicator.setIsLast(true);
+                    return indicator;
+                });
+    }
+
+    @Override
+    public Mono<Indicator> recheck(Indicator indicator) {
+        return this.indicatorRepository.findByUserIdAndIsLast(indicator.getUserId(), true)
+                .map(v -> {
+                    v.setIsLast(false);
+                    this.indicatorRepository.save(v).subscribe(s -> {
+
                         if (s.getTemperature() > 37.5
-                            || s.getBloodOxygen() < 95.0
-                            || s.getUpperBloodPressure() > 140
-                            || s.getUpperBloodPressure() < 100
-                            || s.getLowerBloodPressure() > 90
-                            || s.getLowerBloodPressure() < 60
-                            || s.getHeartRate() > 90
-                            || s.getHeartRate() < 55) {
+                                || s.getBloodOxygen() < 95.0
+                                || s.getUpperBloodPressure() > 140
+                                || s.getUpperBloodPressure() < 100
+                                || s.getLowerBloodPressure() > 90
+                                || s.getLowerBloodPressure() < 60
+                                || s.getHeartRate() > 90
+                                || s.getHeartRate() < 55) {
 
                         }
                         indicator.setIsLast(true);
