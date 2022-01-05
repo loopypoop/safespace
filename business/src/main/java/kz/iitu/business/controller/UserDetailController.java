@@ -24,18 +24,18 @@ public class UserDetailController {
     private IUserDetailService userDetailService;
 
     @ApiOperation(value = "get user's details by user id")
-    @GetMapping("/{userId}")
+    @GetMapping("/byUserId/{userId}")
     public Mono<ResponseEntity<UserDetail>> getByUserId(@PathVariable Long userId) {
         return userDetailService.getByUserId(userId).map(ResponseEntity::ok);
     }
 
     @ApiOperation(value = "update user's details")
-    @PutMapping("/update")
+    @PutMapping("/createUpdate")
     public Mono<ResponseEntity<?>> updateUserDetail(@RequestBody UserDetail userDetail) {
         try {
             return Mono.just(ResponseEntity.ok(userDetailService.updateUser(userDetail)));
         } catch (Exception e) {
-            System.out.println(e.getStackTrace());
+            e.printStackTrace();
             return Mono.just(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
         }
     }

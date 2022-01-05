@@ -42,6 +42,7 @@ public class SecurityConfig {
                 .pathMatchers(HttpMethod.OPTIONS).permitAll()
                 .pathMatchers("/login", "/signup").permitAll()
 //                .pathMatchers("/business/user-detail/**").hasRole("Admin")
+//                .pathMatchers("/business/user-detail/{userId}").hasAuthority("Admin")
                 .anyExchange().authenticated()
                 .and().build();
     }

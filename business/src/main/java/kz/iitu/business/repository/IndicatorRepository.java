@@ -9,4 +9,5 @@ import reactor.core.publisher.Mono;
 @Repository
 public interface IndicatorRepository extends CrudRepository<Indicator, Long> {
     Flux<Indicator> getAllByUserId(Long userDetailId);
+    Mono<Indicator> getByUserIdAndIsLast(Long userId, Boolean isLast);
 }

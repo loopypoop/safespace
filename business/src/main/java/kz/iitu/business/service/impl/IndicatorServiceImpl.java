@@ -5,9 +5,7 @@ import kz.iitu.business.repository.IndicatorRepository;
 import kz.iitu.business.service.IndicatorService;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
-
-import java.util.ArrayList;
-import java.util.List;
+import reactor.core.publisher.Mono;
 
 @Service
 public class IndicatorServiceImpl implements IndicatorService {
@@ -21,5 +19,10 @@ public class IndicatorServiceImpl implements IndicatorService {
     @Override
     public Flux<Indicator> getByAllUserId(Long userId) {
         return this.indicatorRepository.getAllByUserId(userId);
+    }
+
+    @Override
+    public Mono<Indicator> getLastByUserId(Long userId) {
+        return this.indicatorRepository.getByUserIdAndIsLast(userId, true);
     }
 }
