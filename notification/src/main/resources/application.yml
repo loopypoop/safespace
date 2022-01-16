@@ -16,5 +16,3 @@ eureka:
   client:
     service-url:
       defaultZone: ${EUREKA_URL:http://127.0.0.1:8761/eureka/}
-app:
-  firebase-config-file: safespace-b67e3-firebase-adminsdk-tz383-7483a5c55e.json

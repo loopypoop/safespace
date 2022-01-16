@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.sql.Timestamp;
@@ -21,6 +22,8 @@ public class Notification {
     private Timestamp createdAt;
 
     private boolean isSeen;
+
+    private String topic;
 
     private String content;
 
