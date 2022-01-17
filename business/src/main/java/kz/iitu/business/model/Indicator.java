@@ -24,9 +24,7 @@ public class Indicator {
 
     private Integer heartRate;
 
-    private Integer upperBloodPressure;
-
-    private Integer lowerBloodPressure;
+    private Integer bloodPressure;
 
     private Double bloodOxygen;
 

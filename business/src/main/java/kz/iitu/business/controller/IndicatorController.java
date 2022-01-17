@@ -21,6 +21,12 @@ public class IndicatorController {
         return this.indicatorService.getByAllUserId(userId);
     }
 
+    @ApiOperation(value = "get all user's average indicators in one day by its id")
+    @GetMapping("/user/all/avg/{userId}")
+    public Flux<Indicator> getAllAvgOfDayByUserId(@PathVariable Long userId) {
+        return this.indicatorService.getAllAvgOfDayByUserId(userId);
+    }
+
     @ApiOperation(value = "get user's last indicators by user's id")
     @GetMapping("/user/last/{userId}")
     public Mono<Indicator> getLastByUserId(@PathVariable Long userId) {

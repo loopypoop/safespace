@@ -17,6 +17,11 @@ public class IndicatorServiceImpl implements IndicatorService {
     }
 
     @Override
+    public Flux<Indicator> getAllAvgOfDayByUserId(Long id) {
+        return this.indicatorRepository.getAllAvgOfDayByUserId(id);
+    }
+
+    @Override
     public Flux<Indicator> getByAllUserId(Long userId) {
         return this.indicatorRepository.getAllByUserId(userId);
     }
