@@ -18,7 +18,11 @@ spring:
         - id: NOTIFICATION
           uri: 'http://localhost:8067'
           predicates:
-            - Path=/notification/**
+            - Path=/notify/**
+        - id: INTEGRATION
+          uri: 'http://localhost:7999'
+          predicates:
+            - Path=/integ/**
 
 eureka:
   instance:

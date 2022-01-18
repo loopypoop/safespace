@@ -48,11 +48,13 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     private PageRequest createPageRequest(Map<String, String> params) {
-        int page;
-        int size;
+        int page = 0;
+        int size = 5;
         Sort sort = Sort.by("id");
-        page = Integer.parseInt(params.get("page"));
-        size = Integer.parseInt(params.get("size"));
+        if (params.containsKey("page") && params.containsKey("size")) {
+            page = Integer.parseInt(params.get("page"));
+            size = Integer.parseInt(params.get("size"));
+        }
         if (params.containsKey("sortBy"))
             sort = Sort.by(params.get("sortBy"));
         if (params.containsKey("sortDirection")) {
