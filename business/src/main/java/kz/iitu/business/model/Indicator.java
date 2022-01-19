@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,6 +31,10 @@ public class Indicator {
 
     private Timestamp checkTime;
 
+    private Date checkDate;
+
     private Boolean isLast;
+
+    private Integer checkCount;
 
 }
