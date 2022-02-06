@@ -46,6 +46,16 @@ public class UserDetailServiceImpl implements IUserDetailService {
         return userDetailRepository.save(userDetail);
     }
 
+    @Override
+    public Mono<UserDetail> getFirstOrLast() {
+        return this.userDetailRepository.findAll().collect(Collectors.reducing((i1, i2) -> i1)).map(Optional::get);
+    }
+
+    @Override
+    public Flux<UserDetail> filterList() {
+        return this.userDetailRepository.findAll().filter(v -> v.getPosition().equals("Dev"));
+    }
+
     private PageRequest createPageRequest(Map<String, String> params) {
         int page;
         int size;
@@ -63,16 +73,5 @@ public class UserDetailServiceImpl implements IUserDetailService {
         }
 
         return PageRequest.of(page, size, sort);
-    }
-
-
-    @Override
-    public Mono<UserDetail> getFirstOrLast() {
-        return this.userDetailRepository.findAll().collect(Collectors.reducing((i1, i2) -> i1)).map(Optional::get);
-    }
-
-    @Override
-    public Flux<UserDetail> filterList() {
-        return this.userDetailRepository.findAll().filter(v -> v.getPosition().equals("Dev"));
     }
 }
