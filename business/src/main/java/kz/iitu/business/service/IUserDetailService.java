@@ -2,7 +2,6 @@ package kz.iitu.business.service;
 
 import kz.iitu.business.model.User;
 import kz.iitu.business.model.UserDetail;
-import org.springframework.data.domain.PageRequest;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -14,6 +13,8 @@ public interface IUserDetailService {
     Mono<String> getName(Long id);
 
     Mono<UserDetail> getFirstOrLast();
+
+    Flux<UserDetail> getAllUsers();
 
     Flux<UserDetail> filterList();
 

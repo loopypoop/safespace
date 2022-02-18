@@ -32,6 +32,7 @@ public class TaskServiceImpl implements ITaskService {
 
     @Override
     public Mono<Task> createOrUpdate(Task task) {
+        System.out.println("Task" + task.toString());
         return this.taskRepository.save(task);
     }
 

@@ -19,11 +19,11 @@ public class Task {
     @Id
     private Long id;
 
-    private Timestamp created_at;
+    private Timestamp createdAt;
 
-    private Long employee_id;
+    private Long employeeId;
 
-    private Long doctor_id;
+    private Long doctorId;
 
     private String complaints;
 

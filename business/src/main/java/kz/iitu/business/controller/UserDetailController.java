@@ -67,6 +67,17 @@ public class UserDetailController {
         }
     }
 
+    @ApiOperation(value = "get all users' details without pagination")
+    @GetMapping("/users/all")
+    public Flux<UserDetail> getAllUsers() {
+        try {
+            return userDetailService.getAllUsers();
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
+    }
+
     @ApiOperation(value = "test controller")
     @GetMapping("/name/{id}")
     public Mono<ResponseEntity<String>> getFirstName(@PathVariable Long id) {

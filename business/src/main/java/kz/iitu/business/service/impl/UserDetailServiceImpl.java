@@ -42,6 +42,10 @@ public class UserDetailServiceImpl implements IUserDetailService {
         return userDetailRepository.findAllUsers(request);
     }
 
+    public Flux<UserDetail> getAllUsers() {
+        return userDetailRepository.findAll();
+    }
+
     public Mono<UserDetail> updateUser(UserDetail userDetail) {
         return userDetailRepository.save(userDetail);
     }
