@@ -1,5 +1,5 @@
 package kz.iitu.gateway.entity;
 
 public enum Roles {
-    User, Admin
+    User, Admin, Doctor
 }

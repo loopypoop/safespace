@@ -41,7 +41,7 @@ public class SecurityConfig {
                 .authorizeExchange()
                 .pathMatchers(HttpMethod.OPTIONS).permitAll()
                 .pathMatchers("/login", "/signup").permitAll()
-//                .pathMatchers("/business/user-detail/**").hasRole("Admin")
+                .pathMatchers("/business/task").hasAuthority("Doctor")
 //                .pathMatchers("/business/user-detail/{userId}").hasAuthority("Admin")
                 .anyExchange().authenticated()
                 .and().build();
