@@ -1,17 +1,19 @@
 package kz.iitu.business.service.impl;
 
+import kz.iitu.business.model.PageSupport;
 import kz.iitu.business.model.Task;
+import kz.iitu.business.model.dto.TaskDTO;
 import kz.iitu.business.repository.TaskRepository;
 import kz.iitu.business.service.ITaskService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -25,9 +27,18 @@ public class TaskServiceImpl implements ITaskService {
     }
 
     @Override
-    public Flux<Task> getAll(Map<String, String> params) {
+    public Mono<PageSupport<TaskDTO>> getAll(Map<String, String> params) {
         PageRequest pageRequest = createPageRequest(params);
-        return this.taskRepository.findAllPageable(pageRequest);
+         AtomicReference<Long> size = new AtomicReference<>(0L);
+         this.taskRepository.count().subscribe(size::set);
+        return this.taskRepository.findAllPageable(pageRequest)
+                .collectList()
+                .map(list -> new PageSupport<>(
+                        list
+                        .stream()
+                        .collect(Collectors.toList()),
+                        pageRequest.getPageNumber(), pageRequest.getPageSize(), size.get()
+                ));
     }
 
     @Override
@@ -37,11 +48,14 @@ public class TaskServiceImpl implements ITaskService {
     }
 
     private PageRequest createPageRequest(Map<String, String> params) {
-        int page;
-        int size;
+        int page = 0;
+        int size = 5;
         Sort sort = Sort.by("id");
-        page = Integer.parseInt(params.get("page"));
-        size = Integer.parseInt(params.get("size"));
+        if (params.containsKey("page") && params.containsKey("size")) {
+            page = Integer.parseInt(params.get("page"));
+            size = Integer.parseInt(params.get("size"));
+        }
+
         if (params.containsKey("sortBy"))
             sort = Sort.by(params.get("sortBy"));
         if (params.containsKey("sortDirection")) {

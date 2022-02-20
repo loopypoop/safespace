@@ -1,6 +1,8 @@
 package kz.iitu.business.controller;
 
+import kz.iitu.business.model.PageSupport;
 import kz.iitu.business.model.Task;
+import kz.iitu.business.model.dto.TaskDTO;
 import kz.iitu.business.service.ITaskService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +29,7 @@ public class TaskController {
     }
 
     @GetMapping("/all")
-    public Flux<Task> getAllPageable(@RequestParam Map<String, String> params) {
+    public Mono<PageSupport<TaskDTO>> getAllPageable(@RequestParam Map<String, String> params) {
         return this.taskService.getAll(params);
     }
 }
