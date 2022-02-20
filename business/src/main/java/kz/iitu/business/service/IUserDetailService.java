@@ -1,5 +1,6 @@
 package kz.iitu.business.service;
 
+import kz.iitu.business.model.PageSupport;
 import kz.iitu.business.model.User;
 import kz.iitu.business.model.UserDetail;
 import reactor.core.publisher.Flux;
@@ -18,7 +19,7 @@ public interface IUserDetailService {
 
     Flux<UserDetail> filterList();
 
-    Flux<UserDetail> getAllUsersByPagination(Map<String, String> params);
+    Mono<PageSupport<UserDetail>> getAllUsersByPagination(Map<String, String> params);
 
     Mono<UserDetail> updateUser(UserDetail userDetail);
 

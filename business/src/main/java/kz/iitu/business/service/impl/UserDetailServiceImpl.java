@@ -1,6 +1,6 @@
 package kz.iitu.business.service.impl;
 
-import kz.iitu.business.model.User;
+import kz.iitu.business.model.PageSupport;
 import kz.iitu.business.model.UserDetail;
 import kz.iitu.business.repository.UserDetailRepository;
 import kz.iitu.business.repository.UserRepository;
@@ -14,6 +14,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,9 +38,18 @@ public class UserDetailServiceImpl implements IUserDetailService {
         return firstname;
     }
 
-    public Flux<UserDetail> getAllUsersByPagination(Map<String, String> params) {
-        PageRequest request = createPageRequest(params);
-        return userDetailRepository.findAllUsers(request);
+    public Mono<PageSupport<UserDetail>> getAllUsersByPagination(Map<String, String> params) {
+        PageRequest pageRequest = createPageRequest(params);
+        AtomicReference<Long> size = new AtomicReference<>(0L);
+        this.userDetailRepository.countUsers().subscribe(size::set);
+        return userDetailRepository.findAllUsers(pageRequest)
+                .collectList()
+                .map(list -> new PageSupport<>(
+                        list
+                                .stream()
+                                .collect(Collectors.toList()),
+                        pageRequest.getPageNumber(), pageRequest.getPageSize(), size.get()
+                ));
     }
 
     public Flux<UserDetail> getAllUsers() {

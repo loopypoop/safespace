@@ -29,14 +29,14 @@ public class TaskServiceImpl implements ITaskService {
     @Override
     public Mono<PageSupport<TaskDTO>> getAll(Map<String, String> params) {
         PageRequest pageRequest = createPageRequest(params);
-         AtomicReference<Long> size = new AtomicReference<>(0L);
-         this.taskRepository.count().subscribe(size::set);
+        AtomicReference<Long> size = new AtomicReference<>(0L);
+        this.taskRepository.count().subscribe(size::set);
         return this.taskRepository.findAllPageable(pageRequest)
                 .collectList()
                 .map(list -> new PageSupport<>(
                         list
-                        .stream()
-                        .collect(Collectors.toList()),
+                                .stream()
+                                .collect(Collectors.toList()),
                         pageRequest.getPageNumber(), pageRequest.getPageSize(), size.get()
                 ));
     }

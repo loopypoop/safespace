@@ -12,6 +12,10 @@ import reactor.core.publisher.Mono;
 public interface UserDetailRepository extends ReactiveCrudRepository<UserDetail, Long> {
     Mono<UserDetail> getByUserId(Long userId);
 
+    @Query(value = "select count(ud.*) from user_detail ud " +
+            "join users u on u.id = ud.user_id " +
+            "where u.role = 'User'")
+    Mono<Long> countUsers();
     @Query(value = "select ud.* from user_detail ud " +
             "join users u on u.id = ud.user_id " +
             "where u.role = 'User' OFFSET :#{[0].offset} LIMIT :#{[0].pageSize}")

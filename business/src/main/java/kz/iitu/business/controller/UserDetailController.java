@@ -3,6 +3,7 @@ package kz.iitu.business.controller;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import kz.iitu.business.model.PageSupport;
 import kz.iitu.business.model.User;
 import kz.iitu.business.model.UserDetail;
 import kz.iitu.business.repository.UserDetailRepository;
@@ -58,7 +59,7 @@ public class UserDetailController {
 
     @ApiOperation(value = "get all users' details with pagination")
     @GetMapping("/users")
-    public Flux<UserDetail> getAllUsersByPagination(@RequestParam Map<String,String> params) {
+    public Mono<PageSupport<UserDetail>> getAllUsersByPagination(@RequestParam Map<String,String> params) {
         try {
             return userDetailService.getAllUsersByPagination(params);
         } catch (Exception e) {
