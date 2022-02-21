@@ -31,8 +31,9 @@ public class IndicatorController {
 
     @ApiOperation(value = "get user's indicators of Specific Date")
     @GetMapping("/user/date/userId/{date}/{userId}")
-    public Flux<Indicator> getAllBySpecificDateAndUserId(@PathVariable Timestamp date, @PathVariable Long userId) {
-        return this.indicatorService.getAllBySpecificDateAndUserId(date, userId);
+    public Flux<Indicator> getAllBySpecificDateAndUserId(@PathVariable Long date, @PathVariable Long userId) {
+        Timestamp timeDate = new Timestamp(date);
+        return this.indicatorService.getAllBySpecificDateAndUserId(timeDate, userId);
     }
 
     @ApiOperation(value = "get user's last indicators by user's id")
