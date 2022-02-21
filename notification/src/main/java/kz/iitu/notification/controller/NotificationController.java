@@ -21,6 +21,11 @@ public class NotificationController {
         return this.notificationService.getNewNotificationCount(userId);
     }
 
+    @PostMapping("/create")
+    public Mono<Notification> create(@RequestBody Notification notification) {
+        return this.notificationService.create(notification);
+    }
+
     @GetMapping("/get/all/{userId}")
     public Flux<Notification> getAllPageable(@PathVariable Long userId,
                                              @RequestParam Map<String, String> map) {

@@ -47,6 +47,11 @@ public class NotificationServiceImpl implements NotificationService {
         });
     }
 
+    @Override
+    public Mono<Notification> create(Notification notification) {
+        return this.notificationRepository.save(notification);
+    }
+
     private PageRequest createPageRequest(Map<String, String> params) {
         int page = 0;
         int size = 5;

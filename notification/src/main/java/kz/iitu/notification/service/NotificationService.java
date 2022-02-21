@@ -14,4 +14,6 @@ public interface NotificationService {
     Flux<Notification> getAllPageable(Long userId, Map<String, String> map);
 
     Mono<Notification> getNotification(Long id);
+
+    Mono<Notification> create(Notification notification);
 }
