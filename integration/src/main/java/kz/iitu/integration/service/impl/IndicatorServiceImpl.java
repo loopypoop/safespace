@@ -5,9 +5,7 @@ import kz.iitu.integration.model.Notification;
 import kz.iitu.integration.repository.IndicatorRepository;
 import kz.iitu.integration.service.IndicatorService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -18,15 +16,19 @@ import reactor.core.publisher.Mono;
 import java.sql.Timestamp;
 
 @Service
-@AllArgsConstructor
 public class IndicatorServiceImpl implements IndicatorService {
 
     private final IndicatorRepository indicatorRepository;
 
     private final RestTemplate restTemplate;
 
-    @Value("service.notification.url")
-    private final String notificationUrl;
+    public IndicatorServiceImpl(IndicatorRepository indicatorRepository, RestTemplate restTemplate) {
+        this.indicatorRepository = indicatorRepository;
+        this.restTemplate = restTemplate;
+    }
+
+    @Value("${service.notification.url}")
+    private String notificationUrl;
 
     @Override
     public Mono<Indicator> addIndicator(Indicator indicator) {
