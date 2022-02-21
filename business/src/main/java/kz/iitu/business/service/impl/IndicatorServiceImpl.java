@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.sql.Timestamp;
+
 @Service
 public class IndicatorServiceImpl implements IndicatorService {
 
@@ -19,6 +21,17 @@ public class IndicatorServiceImpl implements IndicatorService {
     @Override
     public Flux<Indicator> getAllAvgOfDayByUserId(Long id) {
         return this.indicatorRepository.getAllAvgOfDayByUserId(id);
+    }
+
+    @Override
+    public Flux<Indicator> getAllByDate(Timestamp checkDate) {
+        return null;
+    }
+
+    @Override
+    public Flux<Indicator> getAllBySpecificDateAndUserId(Timestamp checkTime, Long id) {
+        Timestamp checkTimeEnd = new Timestamp(checkTime.getTime() + 86400000);
+        return indicatorRepository.findAllByCheckTimeBetweenAndUserIdOrderByCheckTimeDesc(checkTime, checkTimeEnd, id);
     }
 
     @Override

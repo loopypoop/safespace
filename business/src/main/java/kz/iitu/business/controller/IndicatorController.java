@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.sql.Timestamp;
+
 @RestController
 @RequestMapping("/indicator")
 public class IndicatorController {
@@ -25,6 +27,12 @@ public class IndicatorController {
     @GetMapping("/user/all/avg/{userId}")
     public Flux<Indicator> getAllAvgOfDayByUserId(@PathVariable Long userId) {
         return this.indicatorService.getAllAvgOfDayByUserId(userId);
+    }
+
+    @ApiOperation(value = "get user's indicators of Specific Date")
+    @GetMapping("/user/date/userId/{date}/{userId}")
+    public Flux<Indicator> getAllBySpecificDateAndUserId(@PathVariable Timestamp date, @PathVariable Long userId) {
+        return this.indicatorService.getAllBySpecificDateAndUserId(date, userId);
     }
 
     @ApiOperation(value = "get user's last indicators by user's id")

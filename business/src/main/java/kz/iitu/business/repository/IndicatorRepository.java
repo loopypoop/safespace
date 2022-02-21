@@ -7,9 +7,14 @@ import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.sql.Timestamp;
+
 @Repository
 public interface IndicatorRepository extends CrudRepository<Indicator, Long> {
     Flux<Indicator> getAllByUserId(Long userDetailId);
+    Flux<Indicator> findAllByCheckTimeBetweenAndUserIdOrderByCheckTimeDesc(
+            Timestamp checkTimeStart, Timestamp checkTimeEnd, Long userId
+    );
     Mono<Indicator> getByUserIdAndIsLast(Long userId, Boolean isLast);
     @Query(value = "SELECT DATE(check_time) as check_date,  AVG(blood_pressure) AS blood_pressure, AVG(temperature) AS temperature, AVG(heart_rate) AS heart_rate, AVG(blood_oxygen) AS blood_oxygen," +
             "COUNT(*) AS check_count " +
