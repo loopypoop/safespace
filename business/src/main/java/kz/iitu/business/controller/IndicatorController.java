@@ -2,6 +2,7 @@ package kz.iitu.business.controller;
 
 import io.swagger.annotations.ApiOperation;
 import kz.iitu.business.model.Indicator;
+import kz.iitu.business.model.PageSupport;
 import kz.iitu.business.service.IndicatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +10,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.sql.Timestamp;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/indicator")
@@ -31,9 +33,10 @@ public class IndicatorController {
 
     @ApiOperation(value = "get user's indicators of Specific Date")
     @GetMapping("/user/date/userId/{date}/{userId}")
-    public Flux<Indicator> getAllBySpecificDateAndUserId(@PathVariable Long date, @PathVariable Long userId) {
+    public Mono<PageSupport<Indicator>> getAllBySpecificDateAndUserId(@PathVariable Long date,
+                                                                      @PathVariable Long userId, @RequestParam Map<String, String> param) {
         Timestamp timeDate = new Timestamp(date);
-        return this.indicatorService.getAllBySpecificDateAndUserId(timeDate, userId);
+        return this.indicatorService.getAllBySpecificDateAndUserId(timeDate, userId, param);
     }
 
     @ApiOperation(value = "get user's last indicators by user's id")

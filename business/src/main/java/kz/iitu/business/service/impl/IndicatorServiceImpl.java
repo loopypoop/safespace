@@ -1,13 +1,19 @@
 package kz.iitu.business.service.impl;
 
 import kz.iitu.business.model.Indicator;
+import kz.iitu.business.model.PageSupport;
 import kz.iitu.business.repository.IndicatorRepository;
 import kz.iitu.business.service.IndicatorService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.sql.Timestamp;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 @Service
 public class IndicatorServiceImpl implements IndicatorService {
@@ -29,9 +35,20 @@ public class IndicatorServiceImpl implements IndicatorService {
     }
 
     @Override
-    public Flux<Indicator> getAllBySpecificDateAndUserId(Timestamp checkTime, Long id) {
+    public Mono<PageSupport<Indicator>> getAllBySpecificDateAndUserId(Timestamp checkTime, Long id, Map<String, String> param) {
+        PageRequest pageRequest = createPageRequest(param);
+        AtomicReference<Long> size = new AtomicReference<>(0L);
         Timestamp checkTimeEnd = new Timestamp(checkTime.getTime() + 86400000);
-        return indicatorRepository.findAllByCheckTimeBetweenAndUserIdOrderByCheckTimeDesc(checkTime, checkTimeEnd, id);
+        this.indicatorRepository.countAllByCheckTimeBetweenAndUserIdOrderByCheckTimeDesc(checkTime, checkTimeEnd, id)
+                .subscribe(size::set);
+        return indicatorRepository.findAllByCheckTimeBetweenAndUserIdOrderByCheckTimeDescPageable(checkTime, checkTimeEnd, id, pageRequest)
+                .collectList()
+                .map(list -> new PageSupport<>(
+                        list
+                            .stream()
+                            .collect(Collectors.toList()),
+                        pageRequest.getPageNumber(), pageRequest.getPageSize(), size.get()
+                ));
     }
 
     @Override
@@ -43,4 +60,27 @@ public class IndicatorServiceImpl implements IndicatorService {
     public Mono<Indicator> getLastByUserId(Long userId) {
         return this.indicatorRepository.getByUserIdAndIsLast(userId, true);
     }
+
+    private PageRequest createPageRequest(Map<String, String> params) {
+        int page = 0;
+        int size = 5;
+        Sort sort = Sort.by("id");
+        if (params.containsKey("page") && params.containsKey("size")) {
+            page = Integer.parseInt(params.get("page"));
+            size = Integer.parseInt(params.get("size"));
+        }
+
+        if (params.containsKey("sortBy"))
+            sort = Sort.by(params.get("sortBy"));
+        if (params.containsKey("sortDirection")) {
+            if (params.get("sortDirection").equals("asc")) {
+                sort.ascending();
+            } else {
+                sort.descending();
+            }
+        }
+
+        return PageRequest.of(page, size, sort);
+    }
+
 }
