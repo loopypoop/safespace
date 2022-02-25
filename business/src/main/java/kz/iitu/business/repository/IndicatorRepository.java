@@ -20,7 +20,8 @@ public interface IndicatorRepository extends CrudRepository<Indicator, Long> {
             Timestamp checkTimeStart, Timestamp checkTimeEnd, Long userId, Pageable pageable
     );
 
-    Mono<Long> countAllByCheckTimeBetweenAndUserIdOrderByCheckTimeDesc(Timestamp checkTimeStart, Timestamp checkTimeEnd, Long userId);
+    Mono<Long> countAllByCheckTimeBetweenAndUserId(Timestamp checkTimeStart, Timestamp checkTimeEnd, Long userId);
+
     Mono<Indicator> getByUserIdAndIsLast(Long userId, Boolean isLast);
     @Query(value = "SELECT DATE(check_time) as check_date,  AVG(upper_blood_pressure) AS blood_pressure, AVG(temperature) AS temperature, AVG(heart_rate) AS heart_rate, AVG(blood_oxygen) AS blood_oxygen," +
             "COUNT(*) AS check_count " +

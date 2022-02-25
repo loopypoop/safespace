@@ -38,7 +38,7 @@ public class IndicatorServiceImpl implements IndicatorService {
     public Mono<PageSupport<Indicator>> getAllBySpecificDateAndUserId(Timestamp checkTime, Timestamp checkTimeEnd, Long id, Map<String, String> param) {
         PageRequest pageRequest = createPageRequest(param);
         AtomicReference<Long> size = new AtomicReference<>(0L);
-        this.indicatorRepository.countAllByCheckTimeBetweenAndUserIdOrderByCheckTimeDesc(checkTime, checkTimeEnd, id)
+        this.indicatorRepository.countAllByCheckTimeBetweenAndUserId(checkTime, checkTimeEnd, id)
                 .subscribe(size::set);
         return indicatorRepository.findAllByCheckTimeBetweenAndUserIdOrderByCheckTimeDescPageable(checkTime, checkTimeEnd, id, pageRequest)
                 .collectList()
