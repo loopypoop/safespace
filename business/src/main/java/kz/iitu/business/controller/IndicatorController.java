@@ -32,11 +32,12 @@ public class IndicatorController {
     }
 
     @ApiOperation(value = "get user's indicators of Specific Date")
-    @GetMapping("/user/date/userId/{date}/{userId}")
-    public Mono<PageSupport<Indicator>> getAllBySpecificDateAndUserId(@PathVariable Long date,
+    @GetMapping("/user/date/userId/{dateFrom}/{dateTo}/{userId}")
+    public Mono<PageSupport<Indicator>> getAllBySpecificDateAndUserId(@PathVariable Long dateFrom,@PathVariable Long dateTo,
                                                                       @PathVariable Long userId, @RequestParam Map<String, String> param) {
-        Timestamp timeDate = new Timestamp(date);
-        return this.indicatorService.getAllBySpecificDateAndUserId(timeDate, userId, param);
+        Timestamp timeDateTo = new Timestamp(dateTo);
+        Timestamp timeDateFrom = new Timestamp(dateFrom);
+        return this.indicatorService.getAllBySpecificDateAndUserId(timeDateFrom,timeDateTo, userId, param);
     }
 
     @ApiOperation(value = "get user's last indicators by user's id")

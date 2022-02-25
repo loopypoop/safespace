@@ -11,7 +11,7 @@ import java.util.Map;
 public interface IndicatorService {
     Flux<Indicator> getByAllUserId(Long id);
     Flux<Indicator> getAllAvgOfDayByUserId(Long id);
-    Mono<PageSupport<Indicator>> getAllBySpecificDateAndUserId(Timestamp checkTime, Long id, Map<String, String> param);
+    Mono<PageSupport<Indicator>> getAllBySpecificDateAndUserId(Timestamp checkTime,Timestamp checkTimeEnd, Long id, Map<String, String> param);
     Flux<Indicator> getAllByDate(Timestamp checkDate);
     Mono<Indicator> getLastByUserId(Long userId);
 }
