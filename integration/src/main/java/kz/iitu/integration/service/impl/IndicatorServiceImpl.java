@@ -3,7 +3,10 @@ package kz.iitu.integration.service.impl;
 import kz.iitu.integration.model.Indicator;
 import kz.iitu.integration.model.Notification;
 import kz.iitu.integration.repository.IndicatorRepository;
+import kz.iitu.integration.repository.UserDetailRepository;
+import kz.iitu.integration.repository.UserRepository;
 import kz.iitu.integration.service.IndicatorService;
+import kz.iitu.integration.service.notification.NotificationIntegrationService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -16,19 +19,16 @@ import reactor.core.publisher.Mono;
 import java.sql.Timestamp;
 
 @Service
+@AllArgsConstructor
 public class IndicatorServiceImpl implements IndicatorService {
 
     private final IndicatorRepository indicatorRepository;
 
-    private final RestTemplate restTemplate;
+    private final UserRepository userRepository;
 
-    public IndicatorServiceImpl(IndicatorRepository indicatorRepository, RestTemplate restTemplate) {
-        this.indicatorRepository = indicatorRepository;
-        this.restTemplate = restTemplate;
-    }
+    private final UserDetailRepository userDetailRepository;
 
-    @Value("${service.notification.url}")
-    private String notificationUrl;
+    private final NotificationIntegrationService notificationIntegrationService;
 
     @Override
     public Mono<Indicator> addIndicator(Indicator indicator) {
@@ -39,22 +39,22 @@ public class IndicatorServiceImpl implements IndicatorService {
 
                         int count = 0;
                         String message = "";
-                        if (s.getTemperature() > 37.5) {
+                        if (indicator.getTemperature() > 37.5) {
                             count++;
                             message = "Temperature is too high! Please check your indicators again.";
                             System.out.println("Temperature is too high!");
                         }
-                        if (s.getBloodOxygen() < 95.0) {
+                        if (indicator.getBloodOxygen() < 95.0) {
                             count++;
                             message = "Blood oxygen is too low! Please check your indicators again.";
                             System.out.println("Blood oxygen is too low!");
                         }
-                        if (s.getUpperBloodPressure() > 140) {
+                        if (indicator.getUpperBloodPressure() > 140) {
                             count++;
                             message = "Upper blood pressure is too high! Please check your indicators again.";
                             System.out.println("Upper blood pressure is too high!");
                         }
-                        if (s.getHeartRate() > 90 || s.getHeartRate() < 55) {
+                        if (indicator.getHeartRate() > 90 || indicator.getHeartRate() < 55) {
                             count++;
                             message = "Heart rate is too high/low! Please check your indicators again.";
                             System.out.println("Heart rate is too high/low!");
@@ -73,13 +73,7 @@ public class IndicatorServiceImpl implements IndicatorService {
                                     .userId(indicator.getUserId())
                                     .build();
                             System.out.println(notification.toString());
-                            HttpHeaders headers = new HttpHeaders();
-                            HttpEntity<Notification> entity = new HttpEntity<>(notification, headers);
-
-                            this.restTemplate.exchange(notificationUrl + "create",
-                                    HttpMethod.POST,
-                                    entity,
-                                    Notification.class);
+                            this.notificationIntegrationService.createNotification(notification);
                         }
                         indicator.setIsLast(true);
                         this.indicatorRepository.save(indicator).subscribe();
@@ -99,22 +93,22 @@ public class IndicatorServiceImpl implements IndicatorService {
 
                         int count = 0;
                         String message = "";
-                        if (s.getTemperature() > 37.5) {
+                        if (indicator.getTemperature() > 37.5) {
                             count++;
                             message = "Temperature is too high! Please check your indicators again.";
                             System.out.println("Temperature is too high!");
                         }
-                        if (s.getBloodOxygen() < 95.0) {
+                        if (indicator.getBloodOxygen() < 95.0) {
                             count++;
                             message = "Blood oxygen is too low! Please check your indicators again.";
                             System.out.println("Blood oxygen is too low!");
                         }
-                        if (s.getUpperBloodPressure() > 140) {
+                        if (indicator.getUpperBloodPressure() > 140) {
                             count++;
                             message = "Upper blood pressure is too high! Please check your indicators again.";
                             System.out.println("Upper blood pressure is too high!");
                         }
-                        if (s.getHeartRate() > 90 || s.getHeartRate() < 55) {
+                        if (indicator.getHeartRate() > 90 || indicator.getHeartRate() < 55) {
                             count++;
                             message = "Heart rate is too high/low! Please check your indicators again.";
                             System.out.println("Heart rate is too high/low!");
@@ -125,7 +119,8 @@ public class IndicatorServiceImpl implements IndicatorService {
                         }
 
                         if (count != 0) {
-                            Notification notification = Notification.builder()
+                            //Sending notification to employee
+                            Notification notificationEmployee = Notification.builder()
                                     .createdAt(new Timestamp(System.currentTimeMillis()))
                                     .topic("Abnormal indicators")
                                     .content(message)
@@ -133,13 +128,24 @@ public class IndicatorServiceImpl implements IndicatorService {
                                     .userId(indicator.getUserId())
                                     .build();
 
-                            HttpHeaders headers = new HttpHeaders();
-                            HttpEntity<Notification> entity = new HttpEntity<>(notification, headers);
+                            this.notificationIntegrationService.createNotification(notificationEmployee);
 
-                            this.restTemplate.exchange(notificationUrl + "create",
-                                    HttpMethod.POST,
-                                    entity,
-                                    Notification.class);
+                            //Sending notification to doctors
+                            this.userDetailRepository.getByUserId(indicator.getUserId()).subscribe(n -> {
+                                Notification notificationDoctor = Notification.builder()
+                                        .createdAt(new Timestamp(System.currentTimeMillis()))
+                                        .topic("Employee with abnormal indicators")
+                                        .content("Please check for employee " + n.getFirstName() + " " + n.getLastName() + ", ID: " + n.getUserId()
+                                         + ". The employee has abnormal indicators.")
+                                        .isSeen(false)
+                                        .build();
+                                this.userRepository.getAllByRole("Doctor").subscribe(u -> {
+                                    System.out.println("send to doctor");
+                                    notificationDoctor.setUserId(u.getId());
+                                    this.notificationIntegrationService.createNotification(notificationDoctor);
+                                });
+                            });
+
                         }
 
                     });

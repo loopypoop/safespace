@@ -15,7 +15,7 @@ public interface IndicatorRepository extends CrudRepository<Indicator, Long> {
     Flux<Indicator> getAllByUserId(Long userDetailId);
 
     @Query(value = "select * from indicators where check_time between :checkTimeStart and :checkTimeEnd and user_id = :userId " +
-            "order by check_time asc OFFSET :#{[3].offset} LIMIT :#{[3].pageSize}")
+            "order by check_time desc OFFSET :#{[3].offset} LIMIT :#{[3].pageSize}")
     Flux<Indicator> findAllByCheckTimeBetweenAndUserIdOrderByCheckTimeDescPageable(
             Timestamp checkTimeStart, Timestamp checkTimeEnd, Long userId, Pageable pageable
     );
