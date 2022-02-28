@@ -8,12 +8,7 @@ import kz.iitu.integration.repository.UserRepository;
 import kz.iitu.integration.service.IndicatorService;
 import kz.iitu.integration.service.notification.NotificationIntegrationService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import reactor.core.publisher.Mono;
 
 import java.sql.Timestamp;

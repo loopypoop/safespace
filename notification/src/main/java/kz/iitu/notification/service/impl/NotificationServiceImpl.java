@@ -54,7 +54,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     private PageRequest createPageRequest(Map<String, String> params) {
         int page = 0;
-        int size = 5;
+        int size = 15;
         Sort sort = Sort.by("id");
         if (params.containsKey("page") && params.containsKey("size")) {
             page = Integer.parseInt(params.get("page"));
