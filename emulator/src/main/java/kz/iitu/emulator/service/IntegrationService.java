@@ -5,13 +5,11 @@ import kz.iitu.emulator.model.LoginRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 
 @Service
 public class IntegrationService {
@@ -55,32 +53,18 @@ public class IntegrationService {
         WebClient webClient = WebClient.create(this.gatewayUrl);
 
         WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = webClient.post();
-        WebClient.RequestBodySpec bodySpec = uriSpec.uri("/indicator/new");
+        WebClient.RequestBodySpec bodySpec = uriSpec.uri("/integ/indicator/new");
         WebClient.RequestHeadersSpec<?> headersSpec = bodySpec
-                .header("Authorization", token)
+                .header("Authorization", "Bearer " + token)
                 .bodyValue(indicator);
 
         return headersSpec.exchangeToMono(r -> {
             if (r.statusCode().equals(HttpStatus.OK)) {
+                System.out.println("Indicators successfully saved!\n" + indicator.toString());
                 return r.bodyToMono(Indicator.class);
             } else {
                 return r.createException().flatMap(Mono::error);
             }
         });
     }
-
-
-//    public Indicator sendIndicators(Indicator indicator, String token) {
-//
-//        HttpHeaders headers = new HttpHeaders();
-//        HttpEntity<Indicator> entity = new HttpEntity<>(indicator, headers);
-//        headers.add("Authorization", token);
-//
-//        ResponseEntity<Indicator> result = this.restTemplate.exchange(this.gatewayUrl + "/indicator/new",
-//                HttpMethod.POST,
-//                entity,
-//                Indicator.class);
-//
-//        return result.hasBody() ? result.getBody() : null;
-//    }
 }

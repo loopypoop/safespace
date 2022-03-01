@@ -1,10 +1,18 @@
 package kz.iitu.emulator.scheduler;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import kz.iitu.emulator.model.Indicator;
 import kz.iitu.emulator.service.IntegrationService;
 import lombok.AllArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.List;
 import java.util.Random;
 
 
@@ -14,13 +22,45 @@ public class Scheduler {
 
     private final IntegrationService integrationService;
 
-    @Scheduled(initialDelay = 1000L, fixedDelay = 3000L)
-    public void sendIndicators() {
+    @Scheduled(initialDelay = 1000L, fixedDelay = 30000L)
+    public void sendIndicatorsScheduled() {
+        List<String> users = Arrays.asList("adilili", "detest", "user1", "user2", "user3");
 
-        this.integrationService.getTokenWebClient("adil", "123").subscribe(System.out::println);
+        for (String username : users) {
+            this.integrationService.getTokenWebClient(username, "123").subscribe(token -> {
+                String[] split_string = token.split("\\.");
+                String base64EncodedBody = split_string[1];
+                String body = new String(Base64.getUrlDecoder().decode(base64EncodedBody));
 
-        System.out.println("Random between 1 and 100: " + getRandomDouble(1.0, 100.0));
-        System.out.println("Random between 101 and 200: " + getRandomInt(101, 200));
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode rootNode;
+                Indicator indicator;
+                try {
+                    rootNode = mapper.readTree(body);
+
+                    indicator = Indicator.builder()
+                            //95-100
+                            .bloodOxygen(getRandomDouble(93.0, 99.5))
+                            //90-125
+                            .upperBloodPressure(getRandomInt(88, 125))
+                            //65-90
+                            .lowerBloodPressure(getRandomInt(63, 90))
+                            //36.5-37.0
+                            .temperature(getRandomDouble(36.0, 37.0))
+                            //55-90
+                            .heartRate(getRandomInt(53, 90))
+                            .checkTime(new Timestamp(System.currentTimeMillis()))
+                            .userId(Long.parseLong(String.valueOf(rootNode.get("id"))))
+                            .isLast(true)
+                            .build();
+
+                    this.integrationService.sendIndicators(indicator, token).subscribe(System.out::println);
+
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
     }
 
     public double getRandomDouble(double min, double max) {

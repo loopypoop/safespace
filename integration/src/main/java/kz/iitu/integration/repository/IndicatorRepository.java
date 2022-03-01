@@ -8,4 +8,5 @@ import reactor.core.publisher.Mono;
 @Repository
 public interface IndicatorRepository extends ReactiveCrudRepository<Indicator, Long> {
     Mono<Indicator> findByUserIdAndIsLast(Long userId, Boolean isLast);
+    Mono<Boolean> existsByUserId(Long userId);
 }

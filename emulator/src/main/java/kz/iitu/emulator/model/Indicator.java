@@ -1,12 +1,16 @@
 package kz.iitu.emulator.model;
 
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;;
+import lombok.Setter;
+import lombok.ToString;;
 
 import java.sql.Timestamp;
 
 @Getter
 @Setter
+@Builder
+@ToString
 public class Indicator {
 
     private Long id;

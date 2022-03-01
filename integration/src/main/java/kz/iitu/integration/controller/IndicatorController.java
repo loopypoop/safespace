@@ -16,8 +16,8 @@ public class IndicatorController {
 
     @ApiOperation(value = "get indicators from mobile app")
     @RequestMapping(value = "/new", method = RequestMethod.POST)
-    public Mono<Indicator> addIndicator(@RequestBody Indicator indicator) {
-        return this.indicatorService.addIndicator(indicator);
+    public void addIndicator(@RequestBody Indicator indicator) {
+        this.indicatorService.addIndicator(indicator);
     }
 
     @ApiOperation(value = "check last indicator again if they're abnormal")
