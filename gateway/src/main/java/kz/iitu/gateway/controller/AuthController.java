@@ -1,10 +1,12 @@
 package kz.iitu.gateway.controller;
 
+import kz.iitu.gateway.entity.ChangePasswordRequest;
 import kz.iitu.gateway.entity.LoginRequest;
 import kz.iitu.gateway.entity.User;
 import kz.iitu.gateway.repository.UserRepository;
 import kz.iitu.gateway.security.CustomEncoder;
 import kz.iitu.gateway.service.UserDetailsServiceImpl;
+import kz.iitu.gateway.service.UserServiceImpl;
 import kz.iitu.gateway.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +18,10 @@ import reactor.core.publisher.Mono;
 public class AuthController {
 
     @Autowired
-    private UserDetailsServiceImpl userService;
+    private UserDetailsServiceImpl userDetailsService;
+
+    @Autowired
+    private UserServiceImpl userService;
 
     @Autowired
     private CustomEncoder passwordEncoder;
@@ -29,7 +34,7 @@ public class AuthController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public Mono<ResponseEntity<?>> login(@RequestBody LoginRequest loginRequest) {
-        return userService.loadUserByUsername(loginRequest.getUsername()).map(user -> {
+        return userDetailsService.loadUserByUsername(loginRequest.getUsername()).map(user -> {
             if (passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
                 return ResponseEntity.ok(jwtUtil.generateToken(user));
             } else {
@@ -43,6 +48,11 @@ public class AuthController {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole("User");
         return this.repository.save(user);
+    }
+
+    @PostMapping("/change-password")
+    public Mono<String> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
+        return this.userService.changePassword(changePasswordRequest);
     }
 
     @GetMapping("/check")

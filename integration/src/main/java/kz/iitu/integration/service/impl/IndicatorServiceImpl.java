@@ -30,10 +30,7 @@ public class IndicatorServiceImpl implements IndicatorService {
         indicator.setIsLast(true);
         this.indicatorRepository.existsByUserId(indicator.getUserId()).subscribe(exists -> {
             if (!exists) {
-                System.out.println("1 step: " + exists);
                 this.indicatorRepository.save(indicator).subscribe(s -> {
-                    System.out.println("2 step: " + exists);
-
                     int count = 0;
                     String message = "";
                     if (indicator.getTemperature() > 37.0 || indicator.getTemperature() < 36.5) {

@@ -42,11 +42,11 @@ public class Scheduler {
                             //95-100
                             .bloodOxygen(getRandomDouble(93.0, 99.5))
                             //90-125
-                            .upperBloodPressure(getRandomInt(88, 125))
+                            .upperBloodPressure(getRandomInt(89, 125))
                             //65-90
-                            .lowerBloodPressure(getRandomInt(63, 90))
+                            .lowerBloodPressure(getRandomInt(64, 90))
                             //36.5-37.0
-                            .temperature(getRandomDouble(36.0, 37.0))
+                            .temperature(getRandomDouble(36.5, 37.0))
                             //55-90
                             .heartRate(getRandomInt(53, 90))
                             .checkTime(new Timestamp(System.currentTimeMillis()))
