@@ -1,6 +1,7 @@
 package kz.iitu.notification.service.impl;
 
 import kz.iitu.notification.model.Notification;
+import kz.iitu.notification.model.PageSupport;
 import kz.iitu.notification.repository.NotificationRepository;
 import kz.iitu.notification.service.NotificationService;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -26,14 +29,19 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public Flux<Notification> getAllPageable(Long userId, Map<String, String> map) {
-        PageRequest pageRequest = createPageRequest(map);
-        if (map.containsKey("topic")) {
-            String topic = map.get("topic");
-            return this.notificationRepository.findAllByUserIdAndTopic(userId, topic, pageRequest);
-        } else {
-            return this.notificationRepository.findAllByUserId(userId, pageRequest);
-        }
+    public Mono<PageSupport<Notification>> getAllPageable(Long userId, Map<String, String> param) {
+        PageRequest pageRequest = createPageRequest(param);
+        AtomicReference<Long> size = new AtomicReference<>(0L);
+        this.notificationRepository.countAllByUserId(userId).subscribe(size::set);
+
+        return this.notificationRepository.findAllByUserId(userId, pageRequest)
+                .collectList()
+                .map(list -> new PageSupport<>(
+                        list
+                        .stream()
+                        .collect(Collectors.toList()),
+                        pageRequest.getPageNumber(), pageRequest.getPageSize(), size.get()
+                ));
     }
 
     @Override
@@ -54,7 +62,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     private PageRequest createPageRequest(Map<String, String> params) {
         int page = 0;
-        int size = 15;
+        int size = 10;
         Sort sort = Sort.by("id");
         if (params.containsKey("page") && params.containsKey("size")) {
             page = Integer.parseInt(params.get("page"));

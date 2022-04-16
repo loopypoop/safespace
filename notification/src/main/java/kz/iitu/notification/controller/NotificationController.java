@@ -1,6 +1,7 @@
 package kz.iitu.notification.controller;
 
 import kz.iitu.notification.model.Notification;
+import kz.iitu.notification.model.PageSupport;
 import kz.iitu.notification.service.NotificationService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,8 +28,7 @@ public class NotificationController {
     }
 
     @GetMapping("/get/all/{userId}")
-    public Flux<Notification> getAllPageable(@PathVariable Long userId,
-                                             @RequestParam Map<String, String> map) {
+    public Mono<PageSupport<Notification>> getAllPageable(@PathVariable Long userId, @RequestParam Map<String, String> map) {
         return this.notificationService.getAllPageable(userId, map);
     }
 

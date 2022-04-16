@@ -14,6 +14,7 @@ import reactor.core.publisher.Mono;
 public interface NotificationRepository extends ReactiveCrudRepository<Notification, Long> {
 
     Mono<Integer> countAllByUserIdAndIsSeen(Long userId, Boolean isSeen);
+    Mono<Long> countAllByUserId(Long userId);
 
     @Query(value = "select * from notification n " +
             "where n.user_id = :userId " +
