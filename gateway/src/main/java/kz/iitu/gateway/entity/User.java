@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 //@Entity
 @Table("users")
 public class User implements UserDetails {

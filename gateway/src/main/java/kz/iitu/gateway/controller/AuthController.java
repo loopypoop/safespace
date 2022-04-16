@@ -2,6 +2,7 @@ package kz.iitu.gateway.controller;
 
 import kz.iitu.gateway.entity.ChangePasswordRequest;
 import kz.iitu.gateway.entity.LoginRequest;
+import kz.iitu.gateway.entity.RegisterUserRequest;
 import kz.iitu.gateway.entity.User;
 import kz.iitu.gateway.repository.UserRepository;
 import kz.iitu.gateway.security.CustomEncoder;
@@ -48,6 +49,11 @@ public class AuthController {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole("User");
         return this.repository.save(user);
+    }
+
+    @PostMapping("/create-user")
+    public ResponseEntity<Mono<String>> createUser(@RequestBody RegisterUserRequest registerUserRequest) {
+        return ResponseEntity.ok(this.userService.createUser(registerUserRequest));
     }
 
     @PostMapping("/change-password")
