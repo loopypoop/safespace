@@ -41,15 +41,30 @@ public class UserDetailServiceImpl implements IUserDetailService {
     public Mono<PageSupport<UserDetail>> getAllUsersByPagination(Map<String, String> params) {
         PageRequest pageRequest = createPageRequest(params);
         AtomicReference<Long> size = new AtomicReference<>(0L);
-        this.userDetailRepository.countUsers().subscribe(size::set);
-        return userDetailRepository.findAllUsers(pageRequest)
-                .collectList()
-                .map(list -> new PageSupport<>(
-                        list
-                                .stream()
-                                .collect(Collectors.toList()),
-                        pageRequest.getPageNumber(), pageRequest.getPageSize(), size.get()
-                ));
+        if (!params.containsKey("search")) {
+            this.userDetailRepository.countUsers().subscribe(size::set);
+
+            return userDetailRepository.findAllUsers(pageRequest)
+                    .collectList()
+                    .map(list -> new PageSupport<>(
+                            list
+                                    .stream()
+                                    .collect(Collectors.toList()),
+                            pageRequest.getPageNumber(), pageRequest.getPageSize(), size.get()
+                    ));
+        } else {
+            this.userDetailRepository.countUsersSearch("%" + params.get("search") + "%").subscribe(size::set);
+
+            return userDetailRepository.findUsersSearch(pageRequest, "%" + params.get("search") + "%")
+                    .collectList()
+                    .map(list -> new PageSupport<>(
+                            list
+                                    .stream()
+                                    .collect(Collectors.toList()),
+                            pageRequest.getPageNumber(), pageRequest.getPageSize(), size.get()
+                    ));
+        }
+
     }
 
     public Flux<UserDetail> getAllUsers() {
