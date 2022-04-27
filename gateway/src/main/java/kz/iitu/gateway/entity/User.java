@@ -36,6 +36,8 @@ public class User implements UserDetails {
 
     private String role;
 
+    private Boolean isActive;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<String> roleList = Arrays.asList(role.split(","));

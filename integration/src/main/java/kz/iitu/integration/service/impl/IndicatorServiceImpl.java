@@ -187,7 +187,7 @@ public class IndicatorServiceImpl implements IndicatorService {
                                                 + ". The employee has abnormal indicators.")
                                         .isSeen(false)
                                         .build();
-                                this.userRepository.getAllByRole("Doctor").subscribe(u -> {
+                                this.userRepository.getAllByRoleAndIsActive("Doctor", true).subscribe(u -> {
                                     notificationDoctor.setUserId(u.getId());
                                     this.notificationIntegrationService.createNotification(notificationDoctor);
                                 });

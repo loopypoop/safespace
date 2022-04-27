@@ -15,22 +15,22 @@ public interface UserDetailRepository extends ReactiveCrudRepository<UserDetail,
 
     @Query(value = "select count(ud.*) from user_detail ud " +
             "join users u on u.id = ud.user_id " +
-            "where u.role = 'User'")
+            "where u.role = 'User' and u.is_active = true")
     Mono<Long> countUsers();
     @Query(value = "select ud.* from user_detail ud " +
             "join users u on u.id = ud.user_id " +
-            "where u.role = 'User' OFFSET :#{[0].offset} LIMIT :#{[0].pageSize}")
+            "where u.role = 'User' and u.is_active = true OFFSET :#{[0].offset} LIMIT :#{[0].pageSize}")
     Flux<UserDetail> findAllUsers(Pageable pageable);
 
     @Query(value = "select ud.* from user_detail ud " +
             "join users u on u.id = ud.user_id " +
             "where (lower(ud.first_name) || lower(ud.last_name)) ilike :search " +
-            "and u.role = 'User' OFFSET :#{[0].offset} LIMIT :#{[0].pageSize}")
+            "and u.role = 'User' and u.is_active = true OFFSET :#{[0].offset} LIMIT :#{[0].pageSize}")
     Flux<UserDetail> findUsersSearch(Pageable pageable, @Param("search") String search);
 
     @Query(value = "select count(ud.*) from user_detail ud " +
             "join users u on u.id = ud.user_id " +
             "where (lower(ud.first_name) || lower(ud.last_name)) ilike :search " +
-            "and u.role = 'User'")
+            "and u.role and u.is_active = true = 'User'")
     Mono<Long> countUsersSearch(@Param("search") String search);
 }

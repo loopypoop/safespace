@@ -25,6 +25,8 @@ public class User {
 
     private String role;
 
+    private Boolean isActive;
+
     @JsonProperty
     public void setPassword(String password) {
         this.password = password;

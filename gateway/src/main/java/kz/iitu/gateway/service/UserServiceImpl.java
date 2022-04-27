@@ -40,6 +40,7 @@ public class UserServiceImpl {
                 .username(registerUserRequest.getUsername())
                 .password(passwordEncoder.encode(registerUserRequest.getPassword()))
                 .role(registerUserRequest.getRole())
+                .isActive(true)
                 .build();
 
 

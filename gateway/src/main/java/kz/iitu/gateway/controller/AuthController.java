@@ -61,8 +61,8 @@ public class AuthController {
         return this.userService.changePassword(changePasswordRequest);
     }
 
-    @GetMapping("/check")
-    public ResponseEntity<Mono<User>> hello() {
-        return ResponseEntity.ok(this.repository.getByUsername("adil"));
-    }
+//    @GetMapping("/check")
+//    public ResponseEntity<Mono<User>> hello() {
+//        return ResponseEntity.ok(this.repository.getByUsername("adil"));
+//    }
 }

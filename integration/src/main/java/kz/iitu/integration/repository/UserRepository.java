@@ -7,5 +7,5 @@ import reactor.core.publisher.Flux;
 
 @Repository
 public interface UserRepository extends ReactiveCrudRepository<User, Long> {
-    Flux<User> getAllByRole(String role);
+    Flux<User> getAllByRoleAndIsActive(String role, Boolean isActive);
 }
