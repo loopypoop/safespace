@@ -43,6 +43,7 @@ public class SecurityConfig {
                 .pathMatchers("/login", "/signup").permitAll()
                 .pathMatchers("/business/task").hasAuthority("Doctor")
                 .pathMatchers("/create-user").hasAuthority("Admin")
+                .pathMatchers("/business/deactivate/{userId}").hasAuthority("Admin")
 //                .pathMatchers("/business/user-detail/{userId}").hasAuthority("Admin")
                 .anyExchange().authenticated()
                 .and().build();
