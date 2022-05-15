@@ -40,11 +40,9 @@ create table if not exists user_detail
             references department,
     phone_number  varchar(255),
     risk_status   varchar(255),
-    date_of_birth timestamp
+    date_of_birth timestamp,
+    constraint email_unique unique (email)
 );
-
-create unique index user_detail_email_uindex
-    on user_detail (email);
 
 create table if not exists indicators
 (

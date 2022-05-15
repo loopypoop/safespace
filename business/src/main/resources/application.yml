@@ -10,8 +10,8 @@ spring:
     url: r2dbc:postgresql://localhost:5445/safespace-db
     username: safespace
     password: hc@*bvfS)4
-  liquibase:
-    change-log: classpath:/db/changelog.xml
+#  liquibase:
+#    change-log: classpath:/db/changelog.xml
 eureka:
   instance:
     prefer-ip-address: true
