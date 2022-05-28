@@ -6,5 +6,5 @@ import reactor.core.publisher.Mono;
 public interface IndicatorService {
     void addIndicator(Indicator indicator);
 
-    Mono<Indicator> recheck(Indicator indicator);
+    Mono<Indicator> recheck(Indicator indicator, Long userId);
 }

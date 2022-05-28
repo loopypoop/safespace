@@ -23,6 +23,13 @@ public class IndicatorController {
     @ApiOperation(value = "check last indicator again if they're abnormal")
     @RequestMapping(value = "/recheck", method = RequestMethod.POST)
     public Mono<Indicator> recheck(@RequestBody Indicator indicator) {
-        return this.indicatorService.recheck(indicator);
+        return this.indicatorService.recheck(indicator, indicator.getUserId());
+    }
+
+    @ApiOperation(value = "check indicators again with emulator")
+    @RequestMapping(value = "/emulator/recheck/{userId}", method = RequestMethod.GET)
+    public Mono<Indicator> recheckEmu(@RequestBody(required = false) Indicator indicator,
+                                      @PathVariable Long userId) {
+        return this.indicatorService.recheck(indicator, userId);
     }
 }
